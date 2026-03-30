@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-ассистенты и чат-боты для бизнеса</title>
+  <meta name="description" content="AI-ассистенты и чат-боты для бизнеса. Автоматизация заявок, ответов клиентам, консультаций и рутины. Простые решения под реальные задачи бизнеса." />
+  <style>
+    :root {
+      --bg: #071126;
+      --bg-soft: #0b1735;
+      --card: rgba(13, 23, 53, 0.82);
+      --card-strong: rgba(11, 21, 46, 0.96);
+      --text: #eef4ff;
+      --muted: #a9b8da;
+      --line: rgba(132, 167, 255, 0.18);
+      --primary: #5aa3ff;
+      --primary-2: #71d0ff;
+      --accent: #8a7dff;
+      --accent-2: #3fe0ff;
+      --success: #7cf3c7;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --container: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(64, 136, 255, 0.18), transparent 24%),
+        radial-gradient(circle at 85% 18%, rgba(125, 95, 255, 0.22), transparent 28%),
+        radial-gradient(circle at 70% 70%, rgba(49, 219, 255, 0.12), transparent 22%),
+        linear-gradient(180deg, #09132b 0%, #071126 42%, #060d1d 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.65), rgba(0,0,0,0.08));
+      opacity: 0.22;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 92px 0;
+      position: relative;
+    }
+
+    .section-title {
+      margin: 0 0 14px;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.06;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .section-subtitle {
+      max-width: 760px;
+      margin: 0 0 34px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(106, 176, 255, 0.28);
+      background: rgba(14, 26, 59, 0.68);
+      color: #dbe9ff;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      backdrop-filter: blur(10px);
+    }
+
+    .badge::before {
+      content: "✦";
+      color: var(--accent-2);
+      font-size: 14px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(5, 11, 26, 0.55);
+      border-bottom: 1px solid rgba(123, 156, 255, 0.1);
+    }
+
+    .header-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .logo {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-weight: 800;
+    }
+
+    .logo-top {
+      font-size: 12px;
+      color: var(--primary-2);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .logo-bottom {
+      font-size: 20px;
+      letter-spacing: -0.03em;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .nav a {
+      color: var(--muted);
+      font-size: 14px;
+      transition: 0.2s ease;
+    }
+
+    .nav a:hover {
+      color: #fff;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 15px 22px;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+    }
+
+    .btn-secondary {
+      color: #dce9ff;
+      background: rgba(18, 31, 64, 0.92);
+      border: 1px solid rgba(109, 160, 255, 0.18);
+      box-shadow: none;
+    }
+
+    .hero {
+      padding: 86px 0 72px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      right: -120px;
+      top: -80px;
+      width: 520px;
+      height: 520px;
+      background:
+        radial-gradient(circle at center, rgba(90, 163, 255, 0.38), transparent 34%),
+        radial-gradient(circle at center, rgba(138, 125, 255, 0.26), transparent 56%);
+      filter: blur(20px);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .hero-card,
+    .hero-visual {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(10, 19, 45, 0.92), rgba(8, 16, 36, 0.78));
+      box-shadow: var(--shadow);
+      border-radius: var(--radius-xl);
+      backdrop-filter: blur(16px);
+    }
+
+    .hero-card {
+      padding: 42px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      left: -60px;
+      bottom: -90px;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(63, 224, 255, 0.14), transparent 62%);
+      filter: blur(16px);
+      pointer-events: none;
+    }
+
+    .hero-title {
+      margin: 18px 0 18px;
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+    }
+
+    .hero-title .accent {
+      color: #c2d6ff;
+      display: block;
+    }
+
+    .hero-text {
+      max-width: 620px;
+      font-size: 19px;
+      line-height: 1.7;
+      color: var(--muted);
+      margin: 0 0 28px;
+    }
+
+    .hero-points {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 0 0 30px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .hero-points li {
+      padding: 12px 16px;
+      border: 1px solid rgba(114, 168, 255, 0.16);
+      border-radius: 999px;
+      background: rgba(18, 31, 64, 0.72);
+      color: #d9e7ff;
+      font-size: 14px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .hero-note {
+      color: #c6d6f8;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .hero-visual {
+      min-height: 580px;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      padding: 26px;
+    }
+
+    .visual-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 28% 30%, rgba(63, 224, 255, 0.22), transparent 20%),
+        radial-gradient(circle at 70% 26%, rgba(123, 96, 255, 0.2), transparent 23%),
+        radial-gradient(circle at 54% 58%, rgba(89, 146, 255, 0.2), transparent 28%),
+        linear-gradient(145deg, rgba(11, 25, 64, 0.96), rgba(8, 17, 38, 0.82));
+    }
+
+    .visual-network {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(transparent 96%, rgba(143, 189, 255, 0.06) 100%),
+        linear-gradient(90deg, transparent 96%, rgba(143, 189, 255, 0.06) 100%);
+      background-size: 44px 44px;
+      opacity: 0.45;
+    }
+
+    .ai-core {
+      position: relative;
+      width: min(100%, 460px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at center, rgba(113, 208, 255, 0.28), rgba(8, 16, 36, 0.2) 44%, transparent 64%);
+      box-shadow:
+        inset 0 0 60px rgba(101, 183, 255, 0.18),
+        0 0 80px rgba(70, 138, 255, 0.12);
+    }
+
+    .ai-core::before,
+    .ai-core::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(117, 175, 255, 0.18);
+    }
+
+    .ai-core::before {
+      inset: 10%;
+      animation: spin 18s linear infinite;
+    }
+
+    .ai-core::after {
+      inset: 22%;
+      animation: spinReverse 15s linear infinite;
+    }
+
+    .ai-center {
+      position: relative;
+      z-index: 2;
+      width: 50%;
+      aspect-ratio: 1;
+      border-radius: 28px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 18px;
+      background: linear-gradient(135deg, rgba(101, 162, 255, 0.2), rgba(118, 105, 255, 0.18));
+      border: 1px solid rgba(155, 189, 255, 0.22);
+      box-shadow: 0 0 40px rgba(91, 145, 255, 0.16);
+    }
+
+    .ai-center strong {
+      display: block;
+      font-size: 26px;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      letter-spacing: -0.03em;
+    }
+
+    .ai-center span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .orbit {
+      position: absolute;
+      width: 86px;
+      min-height: 86px;
+      padding: 14px 12px;
+      border-radius: 18px;
+      background: rgba(9, 20, 47, 0.84);
+      border: 1px solid rgba(117, 165, 255, 0.16);
+      color: #dcebff;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.35;
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.24);
+    }
+
+    .orbit.one   { top: 4%;   left: 40%; }
+    .orbit.two   { top: 24%;  right: 1%; }
+    .orbit.three { bottom: 24%; right: 2%; }
+    .orbit.four  { bottom: 4%; left: 40%; }
+    .orbit.five  { bottom: 22%; left: 2%; }
+    .orbit.six   { top: 24%; left: 2%; }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .about-portrait {
+      min-height: 360px;
+      background:
+        radial-gradient(circle at 50% 28%, rgba(132, 174, 255, 0.22), transparent 22%),
+        radial-gradient(circle at 52% 52%, rgba(50, 224, 255, 0.11), transparent 28%),
+        linear-gradient(145deg, rgba(9, 18, 40, 0.96), rgba(11, 23, 53, 0.78));
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portrait-ring {
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      border: 1px solid rgba(130, 177, 255, 0.18);
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at center, rgba(100, 165, 255, 0.18), transparent 60%);
+      box-shadow:
+        inset 0 0 30px rgba(92, 153, 255, 0.16),
+        0 0 50px rgba(62, 134, 255, 0.12);
+    }
+
+    .portrait-inner {
+      width: 66%;
+      height: 66%;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #10295e, #151d47);
+      font-size: 58px;
+      font-weight: 800;
+      color: #dce9ff;
+      letter-spacing: -0.05em;
+    }
+
+    .about-list {
+      margin: 20px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .about-list li {
+      position: relative;
+      padding-left: 28px;
+      color: #dce8ff;
+      line-height: 1.65;
+    }
+
+    .about-list li::before {
+      content: "•";
+      position: absolute;
+      left: 8px;
+      top: 0;
+      color: var(--accent-2);
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .icon-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .icon-card::after {
+      content: "";
+      position: absolute;
+      right: -24px;
+      top: -24px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(114, 208, 255, 0.14), transparent 68%);
+    }
+
+    .icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(88, 163, 255, 0.18), rgba(138, 125, 255, 0.2));
+      border: 1px solid rgba(122, 171, 255, 0.14);
+      margin-bottom: 18px;
+      font-size: 22px;
+    }
+
+    .for-whom-grid,
+    .solutions-grid,
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .solution-card {
+      padding-bottom: 18px;
+    }
+
+    .solution-tag {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(83, 158, 255, 0.12);
+      border: 1px solid rgba(110, 171, 255, 0.18);
+      color: #ddecff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .solution-result {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(125, 161, 255, 0.12);
+      color: #d8e6ff;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .step {
+      position: relative;
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .step-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 24px rgba(86, 121, 255, 0.24);
+    }
+
+    .step h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    .benefit {
+      min-height: 180px;
+    }
+
+    .cta-box {
+      padding: 34px;
+      border-radius: 30px;
+      background:
+        linear-gradient(145deg, rgba(12, 22, 49, 0.96), rgba(10, 20, 40, 0.88)),
+        radial-gradient(circle at 20% 20%, rgba(71, 147, 255, 0.12), transparent 20%);
+      border: 1px solid rgba(109, 160, 255, 0.18);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::after {
+      content: "";
+      position: absolute;
+      right: -120px;
+      bottom: -120px;
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, rgba(86, 162, 255, 0.18), transparent 62%);
+      filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .cta-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .cta-title {
+      margin: 0 0 14px;
+      font-size: clamp(30px, 4vw, 50px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .cta-text {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+      max-width: 720px;
+    }
+
+    .cta-side {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .contact-card {
+      width: 100%;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: rgba(17, 31, 67, 0.78);
+      border: 1px solid rgba(111, 165, 255, 0.15);
+      color: #deebff;
+    }
+
+    .contact-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 17px;
+    }
+
+    .contact-card span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      padding: 24px 0 42px;
+      color: #89a0cc;
+      font-size: 14px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid rgba(127, 160, 255, 0.12);
+      padding-top: 18px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    @keyframes spinReverse {
+      from { transform: rotate(360deg); }
+      to   { transform: rotate(0deg); }
+    }
+
+    @media (max-width: 1100px) {
+      .hero-grid,
+      .about-grid,
+      .cta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cards-grid,
+      .for-whom-grid,
+      .solutions-grid,
+      .benefits-grid,
+      .steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-visual {
+        min-height: 480px;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .nav {
+        display: none;
+      }
+
+      .cards-grid,
+      .for-whom-grid,
+      .solutions-grid,
+      .benefits-grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 58px;
+      }
+
+      .hero-card,
+      .hero-visual,
+      .card,
+      .step,
+      .cta-box {
+        border-radius: 22px;
+      }
+
+      .hero-card {
+        padding: 28px;
+      }
+
+      .hero-visual {
+        min-height: 400px;
+      }
+
+      .orbit {
+        width: 74px;
+        min-height: 74px;
+        font-size: 12px;
+        padding: 10px;
+      }
+
+      .header-actions .btn-secondary {
+        display: none;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        width: min(var(--container), calc(100% - 20px));
+      }
+
+      .section {
+        padding: 72px 0;
+      }
+
+      .header-inner {
+        min-height: 70px;
+      }
+
+      .logo-bottom {
+        font-size: 18px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .hero-points {
+        gap: 10px;
+      }
+
+      .hero-points li {
+        width: 100%;
+      }
+
+      .hero-visual {
+        min-height: 360px;
+        padding: 18px;
+      }
+
+      .ai-center strong {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">
+        <span class="logo-top">AI для бизнеса</span>
+        <span class="logo-bottom">Мария Фищева</span>
+      </div>
+
+      <nav class="nav">
+        <a href="#about">Обо мне</a>
+        <a href="#automation">Что автоматизировать</a>
+        <a href="#solutions">Мои решения</a>
+        <a href="#process">Как проходит работа</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn btn-secondary" href="#solutions">Смотреть решения</a>
+        <a class="btn btn-primary" href="#contact">Написать мне</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-card reveal">
+          <div class="badge">AI-ассистенты и чат-боты для бизнеса</div>
+
+          <h1 class="hero-title">
+            Автоматизирую общение,
+            <span class="accent">заявки и рутину в бизнесе</span>
+          </h1>
+
+          <p class="hero-text">
+            Помогаю внедрять AI-ассистентов и чат-ботов, которые отвечают клиентам,
+            принимают заявки, консультируют и снимают повторяющиеся задачи с вас и команды.
+          </p>
+
+          <ul class="hero-points">
+            <li>Ответы клиентам без задержек</li>
+            <li>Меньше рутины у команды</li>
+            <li>Обработка заявок 24/7</li>
+            <li>Понятные решения без сложных слов</li>
+          </ul>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contact">Обсудить задачу</a>
+            <a class="btn btn-secondary" href="#automation">Что можно автоматизировать</a>
+          </div>
+
+          <div class="hero-note">
+            Можно прийти даже без готового ТЗ — сначала разберём вашу задачу простым языком.
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <div class="visual-bg"></div>
+          <div class="visual-network"></div>
+
+          <div class="ai-core">
+            <div class="orbit one">Контент</div>
+            <div class="orbit two">Заявки</div>
+            <div class="orbit three">Продажи</div>
+            <div class="orbit four">Поддержка</div>
+            <div class="orbit five">Запись</div>
+            <div class="orbit six">FAQ</div>
+
+            <div class="ai-center">
+              <div>
+                <strong>AI</strong>
+                <span>Часть бизнеса может работать на автопилоте</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container">
+        <div class="badge reveal">Обо мне</div>
+        <h2 class="section-title reveal">Делаю AI-решения, которые понятны бизнесу</h2>
+        <p class="section-subtitle reveal">
+          Я помогаю бизнесу внедрять AI-ассистентов и чат-ботов не ради “модной технологии”,
+          а ради понятного результата: быстрее отвечать клиентам, не терять заявки и освобождать время от рутины.
+        </p>
+
+        <div class="about-grid">
+          <div class="card about-portrait reveal">
+            <div class="portrait-ring">
+              <div class="portrait-inner">AI</div>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <h3>Как я подхожу к работе</h3>
+            <p>
+              Сначала разбираюсь в задаче, а уже потом предлагаю решение.
+              Мне важно, чтобы автоматизация реально помогала в работе, а не выглядела красиво только на словах.
+            </p>
+
+            <ul class="about-list">
+              <li>Объясняю всё простым языком, без лишней технической сложности.</li>
+              <li>Смотрю на реальный путь клиента: от первого сообщения до заявки или записи.</li>
+              <li>Подбираю решение под ваш процесс, а не шаблон “для всех”.</li>
+              <li>Делаю так, чтобы система была удобна и вам, и вашим клиентам.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="automation" class="section">
+      <div class="container">
+        <div class="badge reveal">Что можно автоматизировать</div>
+        <h2 class="section-title reveal">Не “нейросети ради нейросетей”, а конкретные задачи бизнеса</h2>
+        <p class="section-subtitle reveal">
+          Если у вас много однотипных вопросов, повторяющихся действий, заявок или переписок —
+          это уже хороший повод отдать часть задач AI-ассистенту.
+        </p>
+
+        <div class="cards-grid">
+          <article class="card icon-card reveal">
+            <div class="icon">💬</div>
+            <h3>Ответы клиентам</h3>
+            <p>
+              Частые вопросы, первичные консультации, объяснение услуг, ответы по условиям,
+              срокам, стоимости и этапам работы.
+            </p>
+          </article>
+
+          <article class="card icon-card reveal">
+            <div class="icon">📝</div>
+            <h3>Приём заявок</h3>
+            <p>
+              Бот может принять заявку, собрать контакты, уточнить детали и передать вам
+              уже более понятный и подготовленный запрос.
+            </p>
+          </article>
+
+          <article class="card icon-card reveal">
+            <div class="icon">📅</div>
+            <h3>Запись и бронирование</h3>
+            <p>
+              Подходит для услуг, консультаций, студий, школ и сервисного бизнеса,
+              где важно быстро записать клиента и не потерять обращение.
+            </p>
+          </article>
+
+          <article class="card icon-card reveal">
+            <div class="icon">🔍</div>
+            <h3>Квалификация клиента</h3>
+            <p>
+              Перед продажей можно заранее выяснить потребность, бюджет, интерес
+              и передать менеджеру уже более тёплую заявку.
+            </p>
+          </article>
+
+          <article class="card icon-card reveal">
+            <div class="icon">📦</div>
+            <h3>Навигация по услугам и продуктам</h3>
+            <p>
+              AI-ассистент помогает человеку быстро понять, что ему подходит,
+              и не теряться в большом количестве предложений.
+            </p>
+          </article>
+
+          <article class="card icon-card reveal">
+            <div class="icon">⚙️</div>
+            <h3>Внутренние процессы</h3>
+            <p>
+              Можно автоматизировать не только работу с клиентами, но и часть внутренних задач:
+              подсказки, инструкции, маршрутизацию и быстрый доступ к информации.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="for-whom" class="section">
+      <div class="container">
+        <div class="badge reveal">Для кого</div>
+        <h2 class="section-title reveal">Подходит не только крупным компаниям</h2>
+        <p class="section-subtitle reveal">
+          Если у вас есть входящие сообщения, вопросы клиентов, повторяющиеся действия или заявки —
+          AI-ассистент уже может быть полезен.
+        </p>
+
+        <div class="for-whom-grid">
+          <article class="card reveal">
+            <h3>Эксперты и консультанты</h3>
+            <p>
+              Для первичных ответов, сбора заявок, записи на консультации и удобного контакта с клиентом.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <h3>Онлайн-школы и обучение</h3>
+            <p>
+              Для консультации по программам, навигации по продуктам, прогрева и приёма заявок.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <h3>Сфера услуг</h3>
+            <p>
+              Подходит студиям, салонам, мастерам, сервисным проектам — там, где важны скорость и запись.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <h3>Интернет-магазины</h3>
+            <p>
+              Для ответов по товарам, наличию, доставке, помощи в выборе и сбору обращений.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <h3>Небольшой бизнес</h3>
+            <p>
+              Если команда маленькая и всё держится на вас — автоматизация помогает разгрузить день.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <h3>Проекты с большим потоком сообщений</h3>
+            <p>
+              Когда люди пишут часто, а отвечать всем быстро становится всё сложнее.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="solutions" class="section">
+      <div class="container">
+        <div class="badge reveal">Мои решения</div>
+        <h2 class="section-title reveal">Собираю решение под вашу задачу, а не просто “делаю бота”</h2>
+        <p class="section-subtitle reveal">
+          Ниже примеры форматов, с которыми можно работать. Их можно адаптировать под ваш бизнес и ваш процесс.
+        </p>
+
+        <div class="solutions-grid">
+          <article class="card solution-card reveal">
+            <span class="solution-tag">Сайт / лендинг</span>
+            <h3>Бот-консультант для сайта</h3>
+            <p>
+              Помогает посетителю разобраться в услугах, задаёт уточняющие вопросы и ведёт к заявке.
+            </p>
+            <div class="solution-result">
+              <strong>Что это даёт:</strong> меньше потерь трафика и больше понятных обращений.
+            </div>
+          </article>
+
+          <article class="card solution-card reveal">
+            <span class="solution-tag">VK / Telegram</span>
+            <h3>Чат-бот в сообществе или мессенджере</h3>
+            <p>
+              Отвечает на частые вопросы, помогает выбрать услугу, собирает данные и направляет дальше.
+            </p>
+            <div class="solution-result">
+              <strong>Что это даёт:</strong> быстрый ответ клиенту даже тогда, когда вы заняты.
+            </div>
+          </article>
+
+          <article class="card solution-card reveal">
+            <span class="solution-tag">Продажи</span>
+            <h3>AI-ассистент для обработки заявок</h3>
+            <p>
+              Уточняет задачу, помогает сегментировать клиента и передаёт вам уже более понятный запрос.
+            </p>
+            <div class="solution-result">
+              <strong>Что это даёт:</strong> экономия времени и более качественные входящие заявки.
+            </div>
+          </article>
+
+          <article class="card solution-card reveal">
+            <span class="solution-tag">Сервис</span>
+            <h3>Бот для записи клиентов</h3>
+            <p>
+              Подходит для сфер, где важна запись: консультации, услуги, студии, сервисные проекты.
+            </p>
+            <div class="solution-result">
+              <strong>Что это даёт:</strong> клиенту проще дойти до записи, а вам проще не потерять его.
+            </div>
+          </article>
+
+          <article class="card solution-card reveal">
+            <span class="solution-tag">Автоматизация</span>
+            <h3>Связка с таблицами, CRM и уведомлениями</h3>
+            <p>
+              Можно связать бота с тем, где вы уже работаете: таблицы, формы, уведомления, передача данных.
+            </p>
+            <div class="solution-result">
+              <strong>Что это даёт:</strong> меньше ручной работы и больше порядка в процессах.
+            </div>
+          </article>
+
+          <article class="card solution-card reveal">
+            <span class="solution-tag">Под ваш процесс</span>
+            <h3>Индивидуальный сценарий под бизнес</h3>
+            <p>
+              Если задача не типовая, можно собрать логику общения и автоматизации именно под вас.
+            </p>
+            <div class="solution-result">
+              <strong>Что это даёт:</strong> решение, которое помогает в работе, а не просто существует.
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="process" class="section">
+      <div class="container">
+        <div class="badge reveal">Как проходит работа</div>
+        <h2 class="section-title reveal">Понятный процесс без хаоса и лишней сложности</h2>
+        <p class="section-subtitle reveal">
+          Вам не нужно заранее разбираться в технических деталях. Я веду по шагам и собираю решение вокруг вашей задачи.
+        </p>
+
+        <div class="steps">
+          <article class="step reveal">
+            <div class="step-num">1</div>
+            <h3>Разбираем задачу</h3>
+            <p>
+              Вы рассказываете, как у вас сейчас устроена работа, где возникают повторяющиеся действия,
+              потери заявок или перегруз.
+            </p>
+          </article>
+
+          <article class="step reveal">
+            <div class="step-num">2</div>
+            <h3>Предлагаю решение</h3>
+            <p>
+              Я смотрю на ваш процесс и предлагаю понятный вариант автоматизации:
+              что именно стоит автоматизировать и как это будет работать.
+            </p>
+          </article>
+
+          <article class="step reveal">
+            <div class="step-num">3</div>
+            <h3>Собираю и настраиваю</h3>
+            <p>
+              Настраиваю логику, тексты, сценарии, связи и поведение бота или AI-ассистента под ваши задачи.
+            </p>
+          </article>
+
+          <article class="step reveal">
+            <div class="step-num">4</div>
+            <h3>Тестируем и запускаем</h3>
+            <p>
+              Проверяем, всё ли понятно, удобно и работает как нужно. После этого запускаем решение в работу.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="benefits" class="section">
+      <div class="container">
+        <div class="badge reveal">Преимущества</div>
+        <h2 class="section-title reveal">Почему это полезно бизнесу</h2>
+        <p class="section-subtitle reveal">
+          AI-ассистент — это не про “заменить всех”, а про то, чтобы снять повторяющиеся действия,
+          ускорить ответы и навести больше порядка в потоке обращений.
+        </p>
+
+        <div class="benefits-grid">
+          <article class="card benefit reveal">
+            <h3>Меньше рутины</h3>
+            <p>
+              Повторяющиеся вопросы и типовые действия можно снять с себя и команды.
+            </p>
+          </article>
+
+          <article class="card benefit reveal">
+            <h3>Быстрее ответы клиентам</h3>
+            <p>
+              Люди не любят ждать. Чем быстрее первый ответ, тем выше шанс не потерять интерес.
+            </p>
+          </article>
+
+          <article class="card benefit reveal">
+            <h3>Меньше потерь заявок</h3>
+            <p>
+              Когда всё приходит в систему понятнее и структурированнее, меньше обращений “теряются по дороге”.
+            </p>
+          </article>
+
+          <article class="card benefit reveal">
+            <h3>Работа 24/7</h3>
+            <p>
+              Бот может отвечать и принимать обращения даже тогда, когда вы не онлайн.
+            </p>
+          </article>
+
+          <article class="card benefit reveal">
+            <h3>Понятно для клиента</h3>
+            <p>
+              Хороший сценарий помогает человеку быстрее понять, что ему подходит и что делать дальше.
+            </p>
+          </article>
+
+          <article class="card benefit reveal">
+            <h3>Решение под ваш процесс</h3>
+            <p>
+              Не шаблон ради шаблона, а настройка под то, как у вас реально всё устроено.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="cta-box reveal">
+          <div class="cta-grid">
+            <div>
+              <div class="badge">Финальный шаг</div>
+              <h2 class="cta-title">Хотите понять, что можно автоматизировать именно у вас?</h2>
+              <p class="cta-text">
+                Напишите мне. Разберём вашу задачу, посмотрим, что можно упростить,
+                и подберём решение без лишней сложности. Можно обратиться даже если у вас пока нет готового ТЗ.
+              </p>
+            </div>
+
+            <div class="cta-side">
+              <a class="btn btn-primary" href="https://vk.com/" target="_blank" rel="noopener noreferrer">
+                Написать в VK
+              </a>
+              <a class="btn btn-secondary" href="mailto:yourmail@example.com">
+                Написать на email
+              </a>
+
+              <div class="contact-card">
+                <strong>Подставь сюда свои контакты</strong>
+                <span>
+                  Замени ссылку VK и email в коде на свои реальные контакты.
+                  При желании можно добавить Telegram, WhatsApp или форму заявки.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>© Мария Фищева — AI-ассистенты и чат-боты для бизнеса</div>
+      <div>Современные решения простым языком</div>
+    </div>
+  </footer>
+
+  <script>
+    // Плавкое появление блоков при прокрутке
+    const revealItems = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.14
+    });
+
+    revealItems.forEach((item) => observer.observe(item));
+
+    // Подсветка активного пункта меню
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav a');
+
+    function setActiveNav() {
+      let currentId = '';
+
+      sections.forEach((section) => {
+        const top = window.scrollY;
+        const offset = section.offsetTop - 140;
+        const height = section.offsetHeight;
+
+        if (top >= offset && top < offset + height) {
+          currentId = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach((link) => {
+        const href = link.getAttribute('href');
+        if (href === '#' + currentId) {
+          link.style.color = '#ffffff';
+        } else {
+          link.style.color = '';
+        }
+      });
+    }
+
+    window.addEventListener('scroll', setActiveNav);
+    setActiveNav();
+  </script>
+</body>
+</html>
