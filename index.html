@@ -178,7 +178,12 @@
       gap: 10px;
       border: none;
       cursor: pointer;
-      transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+      transition:
+        transform 0.26s ease,
+        box-shadow 0.26s ease,
+        background 0.26s ease,
+        filter 0.26s ease,
+        border-color 0.26s ease;
       font-weight: 700;
       font-size: 15px;
       padding: 15px 22px;
@@ -187,7 +192,12 @@
     }
 
     .btn:hover {
-      transform: translateY(-2px);
+      transform: translateY(-2px) scale(1.04);
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(1.02);
+      transition-duration: 0.18s;
     }
 
     .btn-primary {
@@ -195,11 +205,22 @@
       background: linear-gradient(135deg, var(--primary), var(--accent));
     }
 
+    .btn-primary:hover {
+      filter: brightness(1.08) saturate(1.05);
+      box-shadow: 0 22px 52px rgba(90, 163, 255, 0.28);
+    }
+
     .btn-secondary {
       color: #dce9ff;
       background: rgba(18, 31, 64, 0.92);
       border: 1px solid rgba(109, 160, 255, 0.18);
       box-shadow: none;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(28, 44, 88, 0.96);
+      border-color: rgba(140, 185, 255, 0.32);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
     }
 
     .hero {
@@ -716,15 +737,49 @@
       padding-top: 18px;
     }
 
+    section[id] {
+      scroll-margin-top: 90px;
+    }
+
     .reveal {
       opacity: 0;
-      transform: translateY(26px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+      transform: translateY(28px);
+      transition: opacity 0.72s ease, transform 0.72s ease;
     }
 
     .reveal.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      .btn {
+        transition: none;
+      }
+
+      .btn:hover,
+      .btn:active {
+        transform: none;
+        filter: none;
+      }
+
+      .btn-primary:hover {
+        box-shadow: var(--shadow);
+      }
+
+      .btn-secondary:hover {
+        box-shadow: none;
+      }
     }
 
     @keyframes spin {
@@ -1311,6 +1366,27 @@
     });
 
     revealItems.forEach((item) => observer.observe(item));
+
+    // Плавный переход по якорным ссылкам (с учётом prefers-reduced-motion)
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+      const href = anchor.getAttribute('href');
+      if (!href || href === '#' || href.length < 2) return;
+      anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        if (history.replaceState) {
+          history.replaceState(null, '', href);
+        } else {
+          location.hash = href;
+        }
+        target.scrollIntoView({
+          behavior: prefersReducedMotion.matches ? 'auto' : 'smooth',
+          block: 'start'
+        });
+      });
+    });
 
     // Подсветка активного пункта меню
     const sections = document.querySelectorAll('section[id]');
