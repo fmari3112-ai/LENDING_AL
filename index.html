@@ -24,6 +24,12 @@
       --radius-lg: 22px;
       --radius-md: 16px;
       --container: 1180px;
+      --space-1: 10px;
+      --space-2: 14px;
+      --space-3: 18px;
+      --space-4: 24px;
+      --space-5: 32px;
+      --space-6: 40px;
     }
 
     * {
@@ -38,6 +44,7 @@
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
       color: var(--text);
+      line-height: 1.6;
       background:
         radial-gradient(circle at 15% 20%, rgba(64, 136, 255, 0.18), transparent 24%),
         radial-gradient(circle at 85% 18%, rgba(125, 95, 255, 0.22), transparent 28%),
@@ -71,7 +78,7 @@
     }
 
     .section {
-      padding: 92px 0;
+      padding: clamp(72px, 8vw, 96px) 0;
       position: relative;
     }
 
@@ -85,10 +92,10 @@
 
     .section-subtitle {
       max-width: 760px;
-      margin: 0 0 34px;
+      margin: 0 0 var(--space-5);
       color: var(--muted);
-      font-size: 18px;
-      line-height: 1.65;
+      font-size: clamp(17px, 2vw, 18px);
+      line-height: 1.68;
     }
 
     .badge {
@@ -105,6 +112,7 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
       backdrop-filter: blur(10px);
+      margin-bottom: var(--space-2);
     }
 
     .badge::before {
@@ -186,7 +194,8 @@
         border-color 0.26s ease;
       font-weight: 700;
       font-size: 15px;
-      padding: 15px 22px;
+      min-height: 52px;
+      padding: 14px 22px;
       border-radius: 14px;
       box-shadow: var(--shadow);
     }
@@ -224,7 +233,7 @@
     }
 
     .hero {
-      padding: 86px 0 72px;
+      padding: clamp(64px, 7vw, 88px) 0 clamp(64px, 6vw, 76px);
       position: relative;
       overflow: hidden;
     }
@@ -246,7 +255,7 @@
     .hero-grid {
       display: grid;
       grid-template-columns: 1.08fr 0.92fr;
-      gap: 30px;
+      gap: var(--space-5);
       align-items: center;
     }
 
@@ -291,10 +300,10 @@
 
     .hero-text {
       max-width: 620px;
-      font-size: 19px;
-      line-height: 1.7;
+      font-size: clamp(17px, 2.4vw, 19px);
+      line-height: 1.72;
       color: var(--muted);
-      margin: 0 0 28px;
+      margin: 0 0 var(--space-4);
     }
 
     .hero-points {
@@ -445,7 +454,7 @@
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      gap: var(--space-3);
     }
 
     .card {
@@ -455,6 +464,7 @@
       padding: 24px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(12px);
+      height: 100%;
     }
 
     .card h3 {
@@ -473,7 +483,7 @@
     .about-grid {
       display: grid;
       grid-template-columns: 0.92fr 1.08fr;
-      gap: 24px;
+      gap: var(--space-4);
       align-items: stretch;
     }
 
@@ -574,7 +584,7 @@
     .benefits-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      gap: var(--space-3);
     }
 
     .solution-card {
@@ -607,7 +617,7 @@
     .steps {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
+      gap: var(--space-3);
     }
 
     .step {
@@ -648,8 +658,36 @@
       min-height: 180px;
     }
 
+    #cases .section-title {
+      margin-bottom: 28px;
+    }
+
+    .cases-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-3);
+    }
+
+    .case-card {
+      transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+    }
+
+    .case-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.32);
+      border-color: rgba(132, 167, 255, 0.26);
+    }
+
+    .case-card p {
+      margin: 0;
+    }
+
+    .case-card p + p {
+      margin-top: 14px;
+    }
+
     .cta-box {
-      padding: 34px;
+      padding: clamp(24px, 4vw, 34px);
       border-radius: 30px;
       background:
         linear-gradient(145deg, rgba(12, 22, 49, 0.96), rgba(10, 20, 40, 0.88)),
@@ -675,22 +713,22 @@
     .cta-grid {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
-      gap: 24px;
+      gap: var(--space-4);
       align-items: center;
     }
 
     .cta-title {
       margin: 0 0 14px;
       font-size: clamp(30px, 4vw, 50px);
-      line-height: 1.05;
+      line-height: 1.08;
       letter-spacing: -0.04em;
     }
 
     .cta-text {
       margin: 0;
       color: var(--muted);
-      font-size: 18px;
-      line-height: 1.7;
+      font-size: clamp(16px, 2vw, 18px);
+      line-height: 1.72;
       max-width: 720px;
     }
 
@@ -719,7 +757,7 @@
     .contact-card span {
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
     .footer {
@@ -780,6 +818,12 @@
       .btn-secondary:hover {
         box-shadow: none;
       }
+
+      .case-card:hover {
+        transform: none;
+        box-shadow: var(--shadow);
+        border-color: var(--line);
+      }
     }
 
     @keyframes spin {
@@ -810,6 +854,10 @@
       .hero-visual {
         min-height: 480px;
       }
+
+      .hero-card {
+        padding: 34px;
+      }
     }
 
     @media (max-width: 860px) {
@@ -821,12 +869,13 @@
       .for-whom-grid,
       .solutions-grid,
       .benefits-grid,
-      .steps {
+      .steps,
+      .cases-grid {
         grid-template-columns: 1fr;
       }
 
       .hero {
-        padding-top: 58px;
+        padding-top: 56px;
       }
 
       .hero-card,
@@ -839,6 +888,17 @@
 
       .hero-card {
         padding: 28px;
+      }
+
+      .hero-text {
+        font-size: 17px;
+      }
+
+      .section-subtitle,
+      .step p,
+      .card p,
+      .cta-text {
+        font-size: 16px;
       }
 
       .hero-visual {
@@ -868,7 +928,7 @@
       }
 
       .section {
-        padding: 72px 0;
+        padding: 62px 0;
       }
 
       .header-inner {
@@ -881,6 +941,8 @@
 
       .btn {
         width: 100%;
+        min-height: 50px;
+        font-size: 14px;
       }
 
       .hero-actions {
@@ -898,6 +960,29 @@
       .hero-visual {
         min-height: 360px;
         padding: 18px;
+      }
+
+      .section-title {
+        margin-bottom: 12px;
+        line-height: 1.12;
+      }
+
+      .section-subtitle {
+        margin-bottom: 24px;
+      }
+
+      .card,
+      .step,
+      .cta-box {
+        padding: 20px;
+      }
+
+      .cta-grid {
+        gap: 18px;
+      }
+
+      .contact-card {
+        padding: 16px 16px;
       }
 
       .ai-center strong {
@@ -1304,6 +1389,36 @@
             <h3>Решение под&nbsp;ваш процесс</h3>
             <p>
               Не&nbsp;шаблон ради шаблона,<br>а&nbsp;настройка под&nbsp;то, как&nbsp;у&nbsp;вас реально всё устроено.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="cases" class="section">
+      <div class="container">
+        <h2 class="section-title reveal">Как это работает на практике</h2>
+        <div class="cases-grid">
+          <article class="card case-card reveal">
+            <p>
+              Контент занимал кучу времени, и не было системы.
+            </p>
+            <p>
+              Собрали GPT-агента под задачи: генерация постов, структура, идеи.
+            </p>
+            <p>
+              Теперь контент делается быстрее и без хаоса.
+            </p>
+          </article>
+          <article class="card case-card reveal">
+            <p>
+              Педагог вела переписку сама и не всегда успевала отвечать вовремя.
+            </p>
+            <p>
+              Настроили бота: ответы, навигация, первичная обработка.
+            </p>
+            <p>
+              Теперь человек сразу получает ответ, даже если преподаватель занят.
             </p>
           </article>
         </div>
