@@ -264,3 +264,123 @@ setActiveNav();
 
   io.observe(aboutSection);
 })();
+
+// Активное состояние карточек в блоке "С чего начать"
+(function () {
+  const startGrid = document.querySelector('#automation .start-grid');
+  if (!startGrid) return;
+
+  const cards = startGrid.querySelectorAll('.start-card');
+  const details = document.querySelector('#automation .services-details');
+  const detailsGrid = details?.querySelector('.services-details-grid');
+  const detailsTitle = details?.querySelector('.services-details-title');
+  if (!cards.length || !details || !detailsGrid || !detailsTitle) return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const DATA = {
+    single: {
+      title: 'Одно решение',
+      items: [
+        ['Оформление сообщества', 'от 3 000 ₽'],
+        ['Инфографика', 'от 500 ₽ / слайд'],
+        ['Презентации', 'от 5 000 ₽'],
+        ['Визуал: баннеры, флаеры, оформление', 'от 1 000 ₽'],
+        ['Лендинг', 'от 10 000 ₽'],
+        ['Сайт многостраничный', 'от 30 000 ₽'],
+        ['Умные боты и автоответы', 'от 15 000 ₽'],
+        ['Мобильное приложение под задачу', 'от 30 000 ₽']
+      ]
+    },
+    bundle: {
+      title: 'Несколько решений под задачу',
+      items: [
+        ['Автоматизация приёма заявок: бот + CRM', 'от 25 000 ₽'],
+        ['Сайт + заявки', 'от 40 000 ₽'],
+        ['Контент + оформление + заявки', 'от 50 000 ₽'],
+        ['Коммуникация + автоматизация', 'от 60 000 ₽']
+      ]
+    },
+    system: {
+      title: 'Система под процесс',
+      items: [
+        ['Автоматизация процессов', 'от 40 000 ₽'],
+        ['Система под процесс', 'от 90 000 ₽'],
+        ['Автоматизация + AI', 'от 120 000 ₽'],
+        ['Полная система под бизнес', 'от 150 000 ₽']
+      ]
+    }
+  };
+
+  function renderDetails(serviceKey) {
+    const service = DATA[serviceKey];
+    if (!service) return;
+
+    detailsTitle.textContent = `${service.title}: решения и цены`;
+    detailsGrid.innerHTML = service.items
+      .map(([name, price]) => `
+        <article class="service-price-card">
+          <p class="service-price-name">${name}</p>
+          <div class="service-price-value">${price}</div>
+        </article>
+      `)
+      .join('');
+  }
+
+  function closeDetails() {
+    cards.forEach((card) => {
+      card.classList.remove('is-active');
+      card.setAttribute('aria-pressed', 'false');
+    });
+    startGrid.classList.remove('has-active');
+    details.classList.remove('is-visible');
+  }
+
+  function setActive(cardToActivate, withScroll = false) {
+    const serviceKey = cardToActivate.dataset.service;
+    if (!serviceKey || !DATA[serviceKey]) return;
+
+    const wasActive = cardToActivate.classList.contains('is-active');
+    if (wasActive) {
+      closeDetails();
+      return;
+    }
+
+    cards.forEach((card) => {
+      const isActive = card === cardToActivate;
+      card.classList.toggle('is-active', isActive);
+      card.setAttribute('aria-pressed', String(isActive));
+    });
+
+    startGrid.classList.remove('has-active');
+    renderDetails(serviceKey);
+    details.classList.add('is-visible');
+
+    if (withScroll) {
+      details.scrollIntoView({
+        behavior: prefersReducedMotion.matches ? 'auto' : 'smooth',
+        block: 'start'
+      });
+    }
+  }
+
+  cards.forEach((card) => {
+    const cta = card.querySelector('.start-card-btn');
+
+    card.addEventListener('click', () => setActive(card));
+
+    if (cta) {
+      cta.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setActive(card, true);
+      });
+    }
+
+    card.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        setActive(card);
+      }
+    });
+  });
+})();
