@@ -411,10 +411,6 @@ setActiveNav();
     nodes.forEach((node, i) => node.classList.toggle('is-active', i === index));
   }
 
-  function clearFinaleState() {
-    nodes.forEach((node) => node.classList.remove('is-finale'));
-  }
-
   function hideMotion() {
     moving.style.opacity = '0';
     moving.style.transition = 'none';
@@ -426,7 +422,6 @@ setActiveNav();
     clearAllTimers();
     isRunning = false;
     currentIndex = 0;
-    clearFinaleState();
     setActive(0);
     hideMotion();
   }
@@ -459,12 +454,8 @@ setActiveNav();
     }
 
     if (currentIndex === nodes.length - 1) {
-      const lastNode = nodes[currentIndex];
-      clearFinaleState();
-      lastNode.classList.add('is-finale');
       hideMotion();
       timeoutId = setTimeout(() => {
-        lastNode.classList.remove('is-finale');
         finishRun();
       }, finalPauseDuration);
       return;
