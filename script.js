@@ -317,3 +317,56 @@ setActiveNav();
     });
   });
 })();
+
+// Интерактивный блок "Проекты" в секции #cases
+(function () {
+  const casesSection = document.querySelector('#cases');
+  if (!casesSection) return;
+
+  const items = casesSection.querySelectorAll('.project-item');
+  const displayImage = casesSection.querySelector('#project-display-image');
+  const defaultImage = 'img/project-display.png';
+  if (!items.length || !displayImage) return;
+
+  function setDisplayImage(src, isDefault) {
+    displayImage.src = src;
+    displayImage.classList.toggle('is-default', isDefault);
+    displayImage.classList.toggle('is-case', !isDefault);
+  }
+
+  function closeItem(item) {
+    item.classList.remove('is-open');
+    const trigger = item.querySelector('.project-trigger');
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+  }
+
+  function openItem(item) {
+    items.forEach((otherItem) => {
+      if (otherItem !== item) closeItem(otherItem);
+    });
+
+    item.classList.add('is-open');
+    const trigger = item.querySelector('.project-trigger');
+    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+
+    const nextImage = item.dataset.projectImage || defaultImage;
+    setDisplayImage(nextImage, false);
+  }
+
+  items.forEach((item) => {
+    const trigger = item.querySelector('.project-trigger');
+    if (!trigger) return;
+
+    trigger.addEventListener('click', () => {
+      const isOpen = item.classList.contains('is-open');
+      if (isOpen) {
+        closeItem(item);
+        setDisplayImage(defaultImage, true);
+      } else {
+        openItem(item);
+      }
+    });
+  });
+
+  setDisplayImage(defaultImage, true);
+})();

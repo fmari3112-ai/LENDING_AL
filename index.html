@@ -496,30 +496,105 @@
 
     <section id="cases" class="section">
       <div class="container">
+        <div class="badge reveal">Проекты</div>
         <h2 class="section-title reveal">Как это работает на практике</h2>
-        <div class="cases-grid">
-          <article class="card case-card reveal">
-            <p>
-              Контент занимал кучу времени, и не было системы.
-            </p>
-            <p>
-              Собрали GPT-агента под задачи: генерация постов, структура, идеи.
-            </p>
-            <p>
-              Теперь контент делается быстрее и без хаоса.
-            </p>
-          </article>
-          <article class="card case-card reveal">
-            <p>
-              Педагог вела переписку сама и не всегда успевала отвечать вовремя.
-            </p>
-            <p>
-              Настроили бота: ответы, навигация, первичная обработка.
-            </p>
-            <p>
-              Теперь человек сразу получает ответ, даже если преподаватель занят.
-            </p>
-          </article>
+        <p class="section-subtitle reveal">
+          Решения в&nbsp;работе: выберите кейс справа и&nbsp;посмотрите,
+          как&nbsp;подход реализован на&nbsp;практике.
+        </p>
+
+        <div class="projects-layout reveal">
+          <div class="project-display">
+            <img id="project-display-image" src="img/project-display.png" alt="Экран проекта" />
+          </div>
+
+          <div class="project-accordion">
+            <article class="project-item" data-project-image="img/vk-ai-community.jpg">
+              <button class="project-trigger" type="button" aria-expanded="false">
+                <span class="project-head-main">AI сообщество</span>
+                <span class="project-head-sub">Бот отвечает и доводит до заявки</span>
+                <span class="project-arrow">▾</span>
+              </button>
+              <div class="project-panel">
+                <img class="project-mobile-image" src="img/vk-ai-community.jpg" alt="AI сообщество" />
+                <div class="project-panel-content">
+                  <p><strong>Проблема:</strong> пользователю нужно быстро понять, что за решение ему подходит, и получить ответы без долгой переписки.</p>
+                  <p><strong>Решение:</strong> сообщество ВКонтакте + бот-консультант со структурой общения.</p>
+                  <p><strong>Как работает:</strong> бот отвечает на вопросы, помогает сориентироваться и доводит пользователя до заявки.</p>
+                  <p>Бота можно посмотреть на примере: он отвечает на вопросы и доводит пользователя до заявки.</p>
+                  <a class="btn btn-secondary project-inline-cta" href="#bot">Посмотреть бота в&nbsp;работе →</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="project-item" data-project-image="img/lead-magnet-wheel.png">
+              <button class="project-trigger" type="button" aria-expanded="false">
+                <span class="project-head-main">Лид-магнит</span>
+                <span class="project-head-sub">Вовлекает и переводит в бота</span>
+                <span class="project-arrow">▾</span>
+              </button>
+              <div class="project-panel">
+                <img class="project-mobile-image" src="img/lead-magnet-wheel.png" alt="Лид-магнит" />
+                <div class="project-panel-content">
+                  <p><strong>Проблема:</strong> нужно вовлечь человека до заявки, а не просто показать информацию.</p>
+                  <p><strong>Решение:</strong> интерактив “Колесо” + переход в бота.</p>
+                  <p><strong>Как работает:</strong> пользователь проходит механику, получает интерес к теме и продолжает общение в боте.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="project-item" data-project-image="img/atomy-site.jpg">
+              <button class="project-trigger" type="button" aria-expanded="false">
+                <span class="project-head-main">Atomy сайт</span>
+                <span class="project-head-sub">Даёт информацию и ведёт к заявке</span>
+                <span class="project-arrow">▾</span>
+              </button>
+              <div class="project-panel">
+                <img class="project-mobile-image" src="img/atomy-site.jpg" alt="Atomy сайт" />
+                <div class="project-panel-content">
+                  <p><strong>Проблема:</strong> информации много, пользователю сложно быстро разобраться и понять следующий шаг.</p>
+                  <p><strong>Решение:</strong> сайт с понятной структурой + переход в бота.</p>
+                  <p><strong>Как работает:</strong> пользователь изучает информацию, задаёт вопросы в боте и может оставить заявку.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="project-item" data-project-image="img/confidential-project.png">
+              <button class="project-trigger" type="button" aria-expanded="false">
+                <span class="project-head-main">Английский (ВК)</span>
+                <span class="project-head-sub">Бот снимает часть нагрузки</span>
+                <span class="project-arrow">▾</span>
+              </button>
+              <div class="project-panel">
+                <img class="project-mobile-image" src="img/confidential-project.png" alt="Конфиденциальный проект" />
+                <div class="project-panel-content">
+                  <p><strong>Проблема:</strong> много повторяющихся вопросов, которые забирают время у преподавателя.</p>
+                  <p><strong>Решение:</strong> в существующее сообщество подключён бот-консультант.</p>
+                  <p><strong>Как работает:</strong> бот отвечает на частые вопросы,<br>помогает сориентироваться,<br>направляет на пробное занятие<br>и записывает на него.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="project-item" data-project-image="img/mobile-badge-app-1.jpg">
+              <button class="project-trigger" type="button" aria-expanded="false">
+                <span class="project-head-main">Мобильное приложение</span>
+                <span class="project-head-sub">Упрощает рабочий процесс</span>
+                <span class="project-arrow">▾</span>
+              </button>
+              <div class="project-panel">
+                <img class="project-mobile-image" src="img/mobile-badge-app-1.jpg" alt="Мобильное приложение" />
+                <div class="project-panel-content">
+                  <p><strong>Проблема:</strong> печать бейджей занимала лишние действия и время.</p>
+                  <p><strong>Решение:</strong> мобильное приложение под конкретный рабочий процесс.</p>
+                  <p><strong>Как работает:</strong> сотрудник быстро формирует данные для бейджа<br>и отправляет его прямо в печать.</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="cases-cta reveal">
+          <a class="btn btn-primary" href="#bot">Разобрать вашу задачу →</a>
         </div>
       </div>
     </section>
