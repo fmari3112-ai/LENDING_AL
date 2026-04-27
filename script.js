@@ -155,3 +155,112 @@ setActiveNav();
 
   io.observe(heroSection);
 })();
+
+// Accordion в правой карточке блока "Обо мне"
+(function () {
+  const accordion = document.querySelector('.about-accordion');
+  if (!accordion) return;
+
+  const triggers = accordion.querySelectorAll('.about-accordion-trigger');
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const item = trigger.closest('.about-accordion-item');
+      if (!item) return;
+
+      const isOpen = item.classList.toggle('is-open');
+      trigger.setAttribute('aria-expanded', String(isOpen));
+
+      const meta = trigger.querySelector('.about-accordion-meta');
+      const arrow = trigger.querySelector('.about-accordion-arrow');
+      if (meta && arrow) {
+        const label = isOpen ? 'Скрыть' : 'Подробнее';
+        meta.innerHTML = `<span class="about-accordion-arrow">${arrow.textContent}</span>${label}`;
+      }
+    });
+  });
+})();
+
+// Typewriter только для последней строки заголовка блока "Обо мне"
+(function () {
+  const aboutSection = document.querySelector('#about');
+  const typewriterLine = document.querySelector('.about-typewriter-line');
+  if (!aboutSection || !typewriterLine) return;
+
+  const TEXT = 'к системе, встроенной в бизнес';
+  const CHAR_MS = 82;
+  const START_DELAY_MS = 900;
+
+  let timeouts = [];
+  let isVisible = false;
+  let isRunning = false;
+
+  function clearTimers() {
+    timeouts.forEach(clearTimeout);
+    timeouts = [];
+  }
+
+  function reset() {
+    clearTimers();
+    isRunning = false;
+    typewriterLine.textContent = '';
+  }
+
+  function schedule(fn, delay) {
+    const id = setTimeout(() => {
+      timeouts = timeouts.filter((timerId) => timerId !== id);
+      fn();
+    }, delay);
+    timeouts.push(id);
+  }
+
+  function startTypewriter() {
+    if (isRunning || !isVisible) return;
+    reset();
+    isRunning = true;
+
+    const cursor = document.createElement('span');
+    cursor.className = 'about-typewriter-cursor';
+    cursor.setAttribute('aria-hidden', 'true');
+    cursor.textContent = '_';
+
+    let charIndex = 0;
+
+    function tick() {
+      if (!isVisible) {
+        reset();
+        return;
+      }
+
+      if (charIndex < TEXT.length) {
+        typewriterLine.textContent = TEXT.slice(0, charIndex + 1);
+        typewriterLine.appendChild(cursor);
+        charIndex += 1;
+        schedule(tick, CHAR_MS);
+        return;
+      }
+
+      typewriterLine.textContent = TEXT;
+      typewriterLine.appendChild(cursor);
+      isRunning = false;
+    }
+
+    schedule(tick, START_DELAY_MS);
+  }
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) {
+          startTypewriter();
+        } else {
+          reset();
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
+
+  io.observe(aboutSection);
+})();
