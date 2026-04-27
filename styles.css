@@ -895,15 +895,58 @@ a {
 
 .section-process .process-timeline {
   position: relative;
+  margin-top: clamp(26px, 4vw, 46px);
+  padding-top: 22px;
 }
 
 .section-process .process-line {
   position: absolute;
-  left: 7%;
-  right: 7%;
-  top: 38px;
+  left: 12%;
+  right: 12%;
+  top: 59px;
   height: 2px;
-  background: linear-gradient(90deg, rgba(94, 169, 255, 0.35), rgba(63, 224, 255, 0.28));
+  background: rgba(94, 169, 255, 0.28);
+  border-radius: 999px;
+}
+
+.section-process .process-line-progress {
+  position: absolute;
+  top: 59px;
+  left: 12%;
+  height: 2px;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(113, 208, 255, 0.9), rgba(63, 224, 255, 0.72));
+  box-shadow: 0 0 16px rgba(63, 224, 255, 0.34);
+}
+
+.section-process .process-moving-icon {
+  position: absolute;
+  top: 59px;
+  left: 12%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  background: rgba(9, 22, 49, 0.72);
+  border: 1px solid rgba(113, 208, 255, 0.5);
+  color: #9ce9ff;
+  opacity: 0;
+  box-shadow: 0 0 24px rgba(63, 224, 255, 0.32);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.section-process .process-moving-icon svg {
+  width: 32px;
+  height: 32px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .section-process .process-nodes {
@@ -915,28 +958,84 @@ a {
 .section-process .process-node {
   position: relative;
   text-align: center;
-  padding: 0 10px;
+  padding: 0 10px 4px;
 }
 
 .section-process .process-node-number {
-  width: 40px;
-  height: 40px;
-  margin: 0 auto 8px;
-  border-radius: 50%;
-  border: 1px solid rgba(122, 171, 255, 0.28);
-  background: rgba(10, 24, 52, 0.92);
-  color: #dce9ff;
-  display: grid;
-  place-items: center;
-  font-size: 16px;
-  font-weight: 800;
+  position: absolute;
+  left: 50%;
+  top: 74px;
+  transform: translateX(-50%);
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(122, 171, 255, 0.24);
+  background: rgba(8, 18, 40, 0.84);
+  color: #cde4ff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  z-index: 2;
 }
 
 .section-process .process-node-icon {
-  margin: 0 auto 12px;
-  color: #71d0ff;
-  font-size: 13px;
-  line-height: 1;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #8cdfff;
+  background: rgba(10, 24, 52, 0.84);
+  border: 1px solid rgba(122, 171, 255, 0.22);
+  box-shadow: inset 0 0 14px rgba(113, 208, 255, 0.08);
+  position: relative;
+  z-index: 2;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease, background 0.3s ease;
+}
+
+.section-process .process-node-icon svg {
+  width: 36px;
+  height: 36px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.section-process .process-node.is-active .process-node-icon {
+  color: #b9f3ff;
+  border-color: rgba(113, 208, 255, 0.62);
+  background: rgba(11, 28, 58, 0.92);
+  box-shadow:
+    0 0 0 1px rgba(113, 208, 255, 0.22),
+    0 0 24px rgba(63, 224, 255, 0.18),
+    inset 0 0 16px rgba(113, 208, 255, 0.12);
+}
+
+.section-process .process-node.is-finale .process-node-icon {
+  animation: processFinalBlink 0.52s ease-in-out infinite;
+}
+
+@keyframes processFinalBlink {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(113, 208, 255, 0.24),
+      0 0 22px rgba(63, 224, 255, 0.2),
+      inset 0 0 14px rgba(113, 208, 255, 0.14);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(113, 208, 255, 0.38),
+      0 0 34px rgba(63, 224, 255, 0.42),
+      inset 0 0 18px rgba(113, 208, 255, 0.2);
+  }
 }
 
 .section-process .process-step-title {
@@ -954,6 +1053,8 @@ a {
 
 .benefit {
   min-height: 200px;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform;
 }
 
 #benefits .card-icon {
@@ -980,6 +1081,36 @@ a {
   color: var(--muted);
   line-height: 1.6;
   font-size: 16px;
+}
+
+@keyframes benefitIconPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.35));
+  }
+
+  50% {
+    transform: scale(1.12);
+    opacity: 1;
+    filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.9));
+  }
+}
+
+@media (hover: hover) {
+  #benefits .benefit:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: rgba(56, 189, 248, 0.65);
+    box-shadow:
+      0 18px 45px rgba(0, 0, 0, 0.35),
+      0 0 28px rgba(56, 189, 248, 0.18);
+  }
+
+  #benefits .card:hover .card-icon,
+  #benefits .benefit-card:hover .benefit-icon {
+    animation: benefitIconPulse 1.2s ease-in-out infinite;
+  }
 }
 
 #cases .section-title {
@@ -1386,26 +1517,47 @@ section[id] {
     font-size: 16px;
   }
 
+  .section-process .process-timeline {
+    margin-top: 28px;
+    padding-top: 0;
+  }
+
   .section-process .process-line {
+    display: none;
+  }
+
+  .section-process .process-line-progress,
+  .section-process .process-moving-icon {
     display: none;
   }
 
   .section-process .process-node {
     text-align: left;
     padding: 0;
-    padding-left: 48px;
+    padding-left: 62px;
     position: relative;
   }
 
   .section-process .process-node-number {
     position: absolute;
     left: 0;
-    top: 2px;
+    top: 12px;
     margin: 0;
+    transform: none;
   }
 
   .section-process .process-node-icon {
-    display: none;
+    position: absolute;
+    left: 24px;
+    top: 0;
+    margin: 0;
+    width: 50px;
+    height: 50px;
+  }
+
+  .section-process .process-node-icon svg {
+    width: 26px;
+    height: 26px;
   }
 
   .hero-grid > .hero-visual {

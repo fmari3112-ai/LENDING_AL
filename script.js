@@ -370,3 +370,158 @@ setActiveNav();
 
   setDisplayImage(defaultImage, true);
 })();
+
+// Одноразовый прогон таймлайна в блоке #process на вход в viewport
+(function () {
+  const processSection = document.querySelector('#process');
+  const timeline = document.querySelector('#process .process-timeline');
+  if (!processSection || !timeline) return;
+
+  const nodes = Array.from(timeline.querySelectorAll('.process-node'));
+  const line = timeline.querySelector('.process-line');
+  const progress = timeline.querySelector('.process-line-progress');
+  const moving = timeline.querySelector('.process-moving-icon');
+  const isMobile = () => window.matchMedia('(max-width: 860px)').matches;
+  const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!nodes.length || !line || !progress || !moving) return;
+
+  const moveDuration = 1900;
+  const pauseDuration = 900;
+  const finalPauseDuration = 1700;
+
+  let timeoutId = null;
+  let rafId = null;
+  let currentIndex = 0;
+  let hasRunForEntry = false;
+  let isRunning = false;
+
+  function clearAllTimers() {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  }
+
+  function setActive(index) {
+    nodes.forEach((node, i) => node.classList.toggle('is-active', i === index));
+  }
+
+  function clearFinaleState() {
+    nodes.forEach((node) => node.classList.remove('is-finale'));
+  }
+
+  function hideMotion() {
+    moving.style.opacity = '0';
+    moving.style.transition = 'none';
+    progress.style.width = '0px';
+    progress.style.transition = 'none';
+  }
+
+  function resetState() {
+    clearAllTimers();
+    isRunning = false;
+    currentIndex = 0;
+    clearFinaleState();
+    setActive(0);
+    hideMotion();
+  }
+
+  function getIconCenter(index) {
+    const icon = nodes[index].querySelector('.process-node-icon');
+    const timelineRect = timeline.getBoundingClientRect();
+    const iconRect = icon.getBoundingClientRect();
+    return {
+      x: iconRect.left + iconRect.width / 2 - timelineRect.left,
+      y: iconRect.top + iconRect.height / 2 - timelineRect.top
+    };
+  }
+
+  function setMovingIconShape(index) {
+    const icon = nodes[index].querySelector('.process-node-icon');
+    moving.innerHTML = icon ? icon.innerHTML : '';
+  }
+
+  function finishRun() {
+    isRunning = false;
+    hasRunForEntry = true;
+    hideMotion();
+  }
+
+  function runStep() {
+    if (isMobile() || isReduced) {
+      finishRun();
+      return;
+    }
+
+    if (currentIndex === nodes.length - 1) {
+      const lastNode = nodes[currentIndex];
+      clearFinaleState();
+      lastNode.classList.add('is-finale');
+      hideMotion();
+      timeoutId = setTimeout(() => {
+        lastNode.classList.remove('is-finale');
+        finishRun();
+      }, finalPauseDuration);
+      return;
+    }
+
+    const from = getIconCenter(currentIndex);
+    const nextIndex = currentIndex + 1;
+    const to = getIconCenter(nextIndex);
+    const lineStart = Math.min(from.x, to.x);
+    const lineWidth = Math.abs(to.x - from.x);
+
+    setMovingIconShape(currentIndex);
+    moving.style.transition = 'none';
+    moving.style.left = `${from.x}px`;
+    moving.style.top = `${from.y}px`;
+    moving.style.opacity = '0.68';
+
+    progress.style.transition = 'none';
+    progress.style.left = `${lineStart}px`;
+    progress.style.top = `${from.y}px`;
+    progress.style.width = '0px';
+
+    rafId = requestAnimationFrame(() => {
+      moving.style.transition = `left ${moveDuration}ms linear`;
+      progress.style.transition = `width ${moveDuration}ms linear`;
+      moving.style.left = `${to.x}px`;
+      progress.style.width = `${lineWidth}px`;
+    });
+
+    timeoutId = setTimeout(() => {
+      currentIndex = nextIndex;
+      setActive(currentIndex);
+      hideMotion();
+      timeoutId = setTimeout(runStep, pauseDuration);
+    }, moveDuration + 40);
+  }
+
+  function startRunFromZero() {
+    if (isRunning || hasRunForEntry) return;
+    resetState();
+    isRunning = true;
+    runStep();
+  }
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          startRunFromZero();
+        } else {
+          hasRunForEntry = false;
+          resetState();
+        }
+      });
+    },
+    { threshold: 0.25 }
+  );
+
+  io.observe(processSection);
+})();

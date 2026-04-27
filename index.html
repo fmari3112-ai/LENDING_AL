@@ -364,31 +364,58 @@
 
         <div class="process-timeline reveal">
           <div class="process-line"></div>
+          <div class="process-line-progress"></div>
+          <div class="process-moving-icon" aria-hidden="true"></div>
           <div class="process-nodes">
-            <article class="process-node">
+            <article class="process-node is-active" data-step="1">
               <div class="process-node-number">1</div>
-              <div class="process-node-icon">◉</div>
+              <div class="process-node-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="11" cy="11" r="6.5"></circle>
+                  <line x1="16.3" y1="16.3" x2="21" y2="21"></line>
+                </svg>
+              </div>
               <h3 class="process-step-title">Разбор задачи</h3>
               <p class="process-step-text">Смотрим, где теряются заявки, время или&nbsp;порядок</p>
             </article>
 
-            <article class="process-node">
+            <article class="process-node" data-step="2">
               <div class="process-node-number">2</div>
-              <div class="process-node-icon">◉</div>
+              <div class="process-node-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="5.2" cy="6" r="1.7"></circle>
+                  <circle cx="18.8" cy="6" r="1.7"></circle>
+                  <circle cx="12" cy="18" r="1.7"></circle>
+                  <line x1="6.8" y1="7.1" x2="10.5" y2="16.1"></line>
+                  <line x1="17.2" y1="7.1" x2="13.5" y2="16.1"></line>
+                  <line x1="6.9" y1="6" x2="17.1" y2="6"></line>
+                </svg>
+              </div>
               <h3 class="process-step-title">Архитектура решения</h3>
               <p class="process-step-text">Определяю, что нужно собрать: сайт, бот, CRM, сценарии</p>
             </article>
 
-            <article class="process-node">
+            <article class="process-node" data-step="3">
               <div class="process-node-number">3</div>
-              <div class="process-node-icon">◉</div>
+              <div class="process-node-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 10.5l8-8 2 2-8 8z"></path>
+                  <path d="M12 2.5l2 2 2-2 2 2-2 2 2 2-2 2-2-2-2 2-2-2 2-2-2-2z"></path>
+                  <path d="M3 21l5.5-1.3L4.3 15.5z"></path>
+                </svg>
+              </div>
               <h3 class="process-step-title">Сборка и настройка</h3>
               <p class="process-step-text">Собираю логику, тексты, автоматизацию и интеграции</p>
             </article>
 
-            <article class="process-node">
+            <article class="process-node" data-step="4">
               <div class="process-node-number">4</div>
-              <div class="process-node-icon">◉</div>
+              <div class="process-node-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12.5l4 4 10-10"></path>
+                  <path d="M12 3.5a8.5 8.5 0 1 1-6 2.5"></path>
+                </svg>
+              </div>
               <h3 class="process-step-title">Тест и запуск</h3>
               <p class="process-step-text">Проверяем сценарии и запускаем</p>
             </article>
